@@ -210,6 +210,9 @@ export const SignUpForm = ({
                       You must accept our terms and conditions. Read more{" "}
                       <a>here</a>
                     </FieldDescription>
+                    {!!fieldState.error && (
+                      <FieldError>{fieldState.error.message}</FieldError>
+                    )}
                   </FieldContent>
                 </Field>
               );

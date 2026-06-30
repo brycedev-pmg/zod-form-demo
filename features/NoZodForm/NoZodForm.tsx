@@ -17,6 +17,16 @@ export default function NoZodForm() {
     });
 
   const onSubmit = async (data: SignUpFormFields) => {
+    /* Note: Without Zod or other validation, we have to check for the terms being accepted on first render 
+    as it will not be validated if it is never touched. Zod and other libraries will always update validity of
+    the form based on entire schema. But without it, we must check here */
+    if (!data.terms) {
+      setError("terms", {
+        message: "You must accept our terms to create an account",
+      });
+      return;
+    }
+
     const response = await checkEmail(data.email);
 
     if (response) {
