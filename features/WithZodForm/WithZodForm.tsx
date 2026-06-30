@@ -31,6 +31,7 @@ export default function WithZodForm() {
     }
 
     alert("Submission success");
+    console.log(data);
   };
 
   return (

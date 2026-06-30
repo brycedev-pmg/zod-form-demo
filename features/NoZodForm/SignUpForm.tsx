@@ -65,6 +65,16 @@ export const SignUpForm = ({
                       clearErrors("email");
                       field.onChange(e);
 
+                      /**
+                       * You will see this a lot within this file. Without something like Zod taking care of this, you will have to make sure
+                       * validation is ran effectively.
+                       *
+                       * Other point to consider here is that you are will lose visibility once you start to break components out to their own files.
+                       *
+                       * The validation having to stay so close to the onChange definition makes this functionality harder to maintain in the future
+                       * when something might go wrong in your validation or when someone other than you comes back to update a component making use
+                       * of this validation but not necessarially making sure the form is still validating correctly.
+                       */
                       if (!emailRegex.test(e.target.value)) {
                         setError("email", {
                           message: "This email is not valid",
@@ -110,7 +120,7 @@ export const SignUpForm = ({
                   }}
                   value={field.value ?? ""}
                   type="text"
-                  placeholder="username"
+                  placeholder="@username"
                 />
                 {!!fieldState.error && (
                   <FieldError>{fieldState.error.message}</FieldError>

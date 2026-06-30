@@ -14,6 +14,15 @@ export default function NoZodForm() {
         password: "",
         terms: false,
       },
+      /**
+       * This mode value doesn't work as well without validation libraries. You will still need to add setError calls near onChange functions of controlled
+       * components. If you use the register function from useForm, then this mode will make validation happen on inputs that have been defined.
+       *
+       * The problem with 'register' is mostly the fact that it usually has to be tied to directly or very closely aligned native UI elements.
+       *
+       * This will be a problem with very custom UI like a file picker, etc.
+       */
+      mode: "onChange",
     });
 
   const onSubmit = async (data: SignUpFormFields) => {
