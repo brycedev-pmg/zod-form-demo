@@ -100,7 +100,7 @@ export const SignUpForm = ({
             name="username"
             render={({ field, fieldState }) => (
               <Field>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <FieldLabel htmlFor="username">Username (Optional)</FieldLabel>
                 <Input
                   id="username"
                   name={field.name}
@@ -122,6 +122,9 @@ export const SignUpForm = ({
                   type="text"
                   placeholder="@username"
                 />
+                <FieldDescription>
+                  Username will be auto-generated if you do not add one yourself
+                </FieldDescription>
                 {!!fieldState.error && (
                   <FieldError>{fieldState.error.message}</FieldError>
                 )}

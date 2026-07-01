@@ -81,7 +81,7 @@ export const ZodSignUpForm = ({
             name="username"
             render={({ field, fieldState }) => (
               <Field>
-                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <FieldLabel htmlFor="username">Username (Optional)</FieldLabel>
                 <Input
                   id="username"
                   name={field.name}
@@ -92,7 +92,7 @@ export const ZodSignUpForm = ({
                   }}
                   value={field.value ?? ""}
                   type="text"
-                  placeholder="user123"
+                  placeholder="@username"
                 />
                 <FieldDescription>
                   Username will be auto-generated if you do not add one yourself
