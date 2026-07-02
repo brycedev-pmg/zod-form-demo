@@ -17,13 +17,14 @@ export default function Home() {
         className="flex flex-col gap-4 text-zinc-600 dark:text-zinc-300"
       >
         <p>
-          This demo compares two approaches to building forms in React,
-          highlighting what Zod adds to the developer experience.
+          This demo compares two approaches to building forms in React with
+          React Hook Form, highlighting what Zod adds to the developer
+          experience.
         </p>
         <p>
           The <strong>Without Zod </strong> tab shows a form built with{" "}
           <strong>React Hook Form </strong> alone, where every field&apos;s
-          validation rules are written by hand.
+          validation rules are written in each controlled input.
         </p>
         <p>
           The <strong>With Zod</strong> tab shows the same form powered by a{" "}
