@@ -7,6 +7,7 @@ import {
   UseFormClearErrors,
   UseFormSetError,
   useFormState,
+  UseFormTrigger,
 } from "react-hook-form";
 import { EmailInput } from "../../components/EmailInput";
 import { Button } from "../../components/ui/button";
@@ -32,11 +33,11 @@ export const SignUpForm = ({
   onSubmit,
   control,
   clearErrors,
-  setError,
 }: Readonly<SignUpFormProps>) => {
   const { isValid, isValidating, isDirty, isSubmitting } = useFormState({
     control,
   });
+
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -50,6 +51,31 @@ export const SignUpForm = ({
           <Controller
             name="email"
             control={control}
+            rules={{
+              /**
+               * You must set this to get the required check. Zod does this automatically by default
+               */
+              required: true,
+              validate: (email) => {
+                /**
+                 * You will see this a lot within this file. Without something like Zod taking care of this, you will have to make sure
+                 * validation is ran effectively and rules are set in each component.
+                 *
+                 * Other point to consider here is that you are will lose visibility once you start to break components out to their own files.
+                 *
+                 * The validation having to stay so close to the component definition makes this functionality harder to maintain in the future
+                 * when something might go wrong in your validation or when someone other than you comes back to update a component making use
+                 * of this validation but not necessarially making sure the form is still validating correctly.
+                 *
+                 * One idea is to make validation functions you can reuse, but you can do the same with the Zod schema
+                 */
+                if (!emailRegex.test(email)) {
+                  return "This email is not valid";
+                }
+
+                return true;
+              },
+            }}
             render={({ field, fieldState }) => {
               const isInvalid = !!fieldState.error;
               return (
@@ -64,22 +90,6 @@ export const SignUpForm = ({
                     onChange={(e) => {
                       clearErrors("email");
                       field.onChange(e);
-
-                      /**
-                       * You will see this a lot within this file. Without something like Zod taking care of this, you will have to make sure
-                       * validation is ran effectively.
-                       *
-                       * Other point to consider here is that you are will lose visibility once you start to break components out to their own files.
-                       *
-                       * The validation having to stay so close to the onChange definition makes this functionality harder to maintain in the future
-                       * when something might go wrong in your validation or when someone other than you comes back to update a component making use
-                       * of this validation but not necessarially making sure the form is still validating correctly.
-                       */
-                      if (!emailRegex.test(e.target.value)) {
-                        setError("email", {
-                          message: "This email is not valid",
-                        });
-                      }
                     }}
                     value={field.value}
                     type="email"
@@ -98,6 +108,15 @@ export const SignUpForm = ({
           <Controller
             control={control}
             name="username"
+            rules={{
+              validate: (username) => {
+                if (username && !usernameRegex.test(username)) {
+                  return "Username can only have lowercase letters and numbers";
+                }
+
+                return true;
+              },
+            }}
             render={({ field, fieldState }) => (
               <Field>
                 <FieldLabel htmlFor="username">Username (Optional)</FieldLabel>
@@ -108,15 +127,6 @@ export const SignUpForm = ({
                   onChange={(e) => {
                     clearErrors("username");
                     field.onChange(e);
-
-                    if (e.target.value) {
-                      if (!usernameRegex.test(e.target.value)) {
-                        setError("username", {
-                          message:
-                            "Username can only have lowercase letters and numbers",
-                        });
-                      }
-                    }
                   }}
                   value={field.value ?? ""}
                   type="text"
@@ -134,6 +144,19 @@ export const SignUpForm = ({
           <Controller
             name="password"
             control={control}
+            rules={{
+              required: true,
+              min: 8,
+              validate: (password) => {
+                if (password.length < 8) {
+                  return "Password must be at least 8 characters";
+                } else if (!passwordRegex.test(password)) {
+                  return "Paswword must have at leaston 1 uppercase letter, at least 1 number, and at least 1 special character";
+                }
+
+                return true;
+              },
+            }}
             render={({ field, fieldState }) => {
               const isInvalid = !!fieldState.error;
               return (
@@ -156,17 +179,6 @@ export const SignUpForm = ({
                       onChange={(e) => {
                         clearErrors("password");
                         field.onChange(e);
-
-                        if (e.target.value.length < 8) {
-                          setError("password", {
-                            message: "Password must be at least 8 characters",
-                          });
-                        } else if (!passwordRegex.test(e.target.value)) {
-                          setError("password", {
-                            message:
-                              "Paswword must have at leaston 1 uppercase letter, at least 1 number, and at least 1 special character",
-                          });
-                        }
                       }}
                       value={field.value}
                       type={!showPassword ? "password" : "text"}
@@ -192,6 +204,10 @@ export const SignUpForm = ({
           />
           <Controller
             name="terms"
+            rules={{
+              required: true,
+              validate: (checked) => checked,
+            }}
             control={control}
             render={({ field, fieldState }) => {
               const isInvalid = !!fieldState.error;
@@ -204,13 +220,6 @@ export const SignUpForm = ({
                     onCheckedChange={(e) => {
                       clearErrors("terms");
                       field.onChange(e);
-
-                      if (!Boolean(e.valueOf())) {
-                        setError("terms", {
-                          message:
-                            "You must accept our terms to create an account",
-                        });
-                      }
                     }}
                     checked={field.value}
                     aria-invalid={isInvalid}
@@ -247,5 +256,4 @@ export interface SignUpFormProps {
   onSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => void;
   control: Control<SignUpFormFields>;
   clearErrors: UseFormClearErrors<SignUpFormFields>;
-  setError: UseFormSetError<SignUpFormFields>;
 }

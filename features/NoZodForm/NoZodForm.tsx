@@ -15,10 +15,10 @@ export default function NoZodForm() {
         terms: false,
       },
       /**
-       * This mode value doesn't work as well without validation libraries. You will still need to add setError calls near onChange functions of controlled
-       * components. If you use the register function from useForm, then this mode will make validation happen on inputs that have been defined.
+       * If you use the register function from useForm, then this mode will make validation happen on inputs that have been defined.
        *
-       * The problem with 'register' is mostly the fact that it usually has to be tied to directly or very closely aligned native UI elements.
+       * The problem with 'register' is mostly the fact that it usually has to be directly or very closely aligned with native UI elements that make custom UI
+       * harder to implement
        *
        * This will be a problem with very custom UI like a file picker, etc.
        */
@@ -26,16 +26,6 @@ export default function NoZodForm() {
     });
 
   const onSubmit = async (data: SignUpFormFields) => {
-    /* Note: Without Zod or other validation, we have to check for the terms being accepted on first render 
-    as it will not be validated if it is never touched. Zod and other libraries will always update validity of
-    the form based on entire schema. But without it, we must check here */
-    if (!data.terms) {
-      setError("terms", {
-        message: "You must accept our terms to create an account",
-      });
-      return;
-    }
-
     const response = await checkEmail(data.email);
 
     if (response) {
@@ -54,7 +44,6 @@ export default function NoZodForm() {
         onSubmit={handleSubmit(onSubmit)}
         control={control}
         clearErrors={clearErrors}
-        setError={setError}
       />
     </Page>
   );
