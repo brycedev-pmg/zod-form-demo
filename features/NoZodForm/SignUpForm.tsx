@@ -1,13 +1,12 @@
 import { SignUpFormFields } from "@/types";
+import { emailRegex, passwordRegex, usernameRegex } from "@/utils/regex";
 import { EyeClosedIcon, EyeIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Control,
   Controller,
   UseFormClearErrors,
-  UseFormSetError,
   useFormState,
-  UseFormTrigger,
 } from "react-hook-form";
 import { EmailInput } from "../../components/EmailInput";
 import { Button } from "../../components/ui/button";
@@ -27,7 +26,6 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "../../components/ui/input-group";
-import { emailRegex, passwordRegex, usernameRegex } from "@/utils/regex";
 
 export const SignUpForm = ({
   onSubmit,
