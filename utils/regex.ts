@@ -1,4 +1,4 @@
-export const usernameRegex = /^[a-zA-Z0-9]+$/;
+export const usernameRegex = /^(?:@?[A-Za-z0-9]+)?$/;
 
 export const passwordRegex =
   /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;

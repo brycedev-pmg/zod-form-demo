@@ -22,7 +22,7 @@ export default function Home() {
           experience.
         </p>
         <p>
-          The <strong>Without Zod </strong> tab shows a form built with{" "}
+          The <strong>Plain Typescript </strong> tab shows a form built with{" "}
           <strong>React Hook Form </strong> alone, where every field&apos;s
           validation rules are written in each controlled input.
         </p>

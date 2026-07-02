@@ -60,12 +60,16 @@ export const signUpSchema = z.object({
      * This function can be async as well
      */
     .transform((value) => {
+      if (!value) {
+        return "";
+      }
+
       return (
         (value.charAt(0) !== "@" ? "@" + value : value).toLowerCase() + "data55"
       );
     })
     .optional(),
-  terms: z.boolean({
+  terms: z.literal(true, {
     error: "You must accept our terms to create an account",
   }),
 });

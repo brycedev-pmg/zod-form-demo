@@ -9,11 +9,6 @@ import { checkEmail } from "@/app/actions";
 export default function NoZodForm() {
   const { handleSubmit, control, clearErrors, setError } =
     useForm<SignUpFormFields>({
-      defaultValues: {
-        email: "",
-        password: "",
-        terms: false,
-      },
       /**
        * If you use the register function from useForm, then this mode will make validation happen on inputs that have been defined.
        *
@@ -35,6 +30,23 @@ export default function NoZodForm() {
       return;
     }
 
+    /**
+     * Data transformation has to happen here to ensure don't mess up validation
+     */
+    let transformedData: SignUpFormFields;
+    if (data.username) {
+      transformedData = {
+        ...data,
+        username: `@${data.username}data55`,
+      };
+    } else {
+      transformedData = {
+        ...data,
+        username: `@bryce2026data55`,
+      };
+    }
+
+    console.log(transformedData);
     alert("Submission success");
   };
 
